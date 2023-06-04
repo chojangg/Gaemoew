@@ -7,7 +7,7 @@ import java.util.*;
 class Game extends JFrame implements KeyListener, Runnable {
     int width = 1920;    //프레임 가로
     int height = 1080;    //프레임 높이
-    int x = 100, y = 500;  //플레이어 좌표 변수
+    int x = 250, y = 500;  //플레이어 좌표 변수
     int score = 0;    //게임 점수
     int life = 3;     //게임 생명
 
@@ -26,15 +26,13 @@ class Game extends JFrame implements KeyListener, Runnable {
     Image background_img;   //배경화면 이미지
     Image explode_img;      //폭발 이미지
     Image bat_img;          //방망이 이미지
-    Image rock_img1;         //장애물 이미지
-    Image rock_img2;
+    Image rock_img;         //장애물 이미지
     Image coin_img;         // 코인 이미지
 
     public void getimg() {
         try {
             bat_img = new ImageIcon("src/image/bat.png").getImage();
-            rock_img1 = new ImageIcon("src/image/rock-1.png").getImage();
-            rock_img2 = new ImageIcon("src/image/rock-2.png").getImage();
+            rock_img = new ImageIcon("src/image/rock-1.png").getImage();
             coin_img = new ImageIcon("src/image/coin.gif").getImage();
             rabbit_img = new ImageIcon("src/image/rabbit.gif").getImage();
             background_img = new ImageIcon("src/image/background.png").getImage();
@@ -112,7 +110,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                 if(ch_break==1){
                     break;
                 }
-                if(score==100){     //일정 점수가 될때마다 난이도 높이기 (장애물 속도 빠르게 하기)
+                if(score==100){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
                     round=2;
                     rock_speed =14;
                 }
@@ -131,9 +129,9 @@ class Game extends JFrame implements KeyListener, Runnable {
                 KeyWok();           //키보드 입력으로 x, y갱신
                 WorkGame();         //게임 동작 메소드
                 repaint();          //갱신된 값으로 이미지 새로 그리기
-                Thread.sleep(20);
-                shoot++;
-                appear++;
+                Thread.sleep(20);  //20mill sec의 속도로 스레드 돌리기
+                shoot++;    //연속 발사 위해 횟수 카운트
+                appear++;   //장애물 등장 간격 위해 횟수 카운트
             }
         } catch (Exception e) {
             System.out.println("오류가 발생하였습니다. ");
@@ -149,11 +147,11 @@ class Game extends JFrame implements KeyListener, Runnable {
             rock = (Rock) (arr_rock.get(i));   //배열에 장애물이 만들어져있을 때 해당되는 장애물
             rock.move();  //해당 장애물 움직이기
 
-            if (Crash_check(x, y, rock.x, rock.y, rabbit_img, rock_img1)==1) {    //플레이어가 장애물과 충돌했을 때
+            if (Crash_check(x, y, rock.x, rock.y, rabbit_img, rock_img)==1) {    //플레이어가 장애물과 충돌했을 때
                 life--;    //생명 하나 줄기
                 arr_rock.remove(i);   //해당 장애물 삭제
 
-                explosion = new Explode(rock.x + rock_img1.getWidth(null) / 2, rock.y + rock_img1.getHeight(null) / 2, 0);
+                explosion = new Explode(rock.x + rock_img.getWidth(null) / 2, rock.y + rock_img.getHeight(null) / 2, 0);
                 //적의 현재 중심 좌표와 폭발 상황 "0" 받기
                 arr_explosion.add(explosion);   //충돌된 적의 위치에 폭발 효과 넣기
                 explosion = new Explode(x, y, 1); //플레이어의 현재 좌표와 폭발 상황 "1" 받기
@@ -171,7 +169,7 @@ class Game extends JFrame implements KeyListener, Runnable {
             arr_rock.add(rock);
             rock = new Rock(width + 100, 70);
             arr_rock.add(rock);
-            appear=0;
+            appear=0;   //appear 초기화
         }
 
         //화살쏘기
@@ -188,12 +186,12 @@ class Game extends JFrame implements KeyListener, Runnable {
             bat.move();
             for (int j = 0; j < arr_rock.size(); ++j) {
                 rock = (Rock) arr_rock.get(j);
-                if (Crash_check(bat.x, bat.y, rock.x, rock.y, bat_img, rock_img1)==1) {
-                    //장애물이 방망이에 맞을 경우
+                if (Crash_check(bat.x, bat.y, rock.x, rock.y, bat_img, rock_img)==1) {
+                    //장애물에 맞을 경우
                     arr_bat.remove(i);
                     arr_rock.remove(j);
                     score += 10;  //점수 +10
-                    explosion = new Explode(rock.x + rock_img1.getWidth(null) / 2, rock.y + rock_img1.getHeight(null) / 2, 0);
+                    explosion = new Explode(rock.x + rock_img.getWidth(null) / 2, rock.y + rock_img.getHeight(null) / 2, 0);
                     arr_explosion.add(explosion);
                 }
             }
@@ -261,7 +259,7 @@ class Game extends JFrame implements KeyListener, Runnable {
     public void Print_Rock() {  //장애물 이미지 출력
         for (int i = 0; i < arr_rock.size(); ++i) {
             rock = (Rock) (arr_rock.get(i));
-            bufferg.drawImage(rock_img1, rock.x, rock.y-35, this);
+            bufferg.drawImage(rock_img, rock.x, rock.y-35, this);
         }
     }
 
@@ -305,11 +303,12 @@ class Game extends JFrame implements KeyListener, Runnable {
     boolean Down = false;
     boolean Space = false;
     public void KeyWok() {
+        //키보드 입력 방향으로 플레이어 5씩 이동
         if (Up == true) {
-            y -= 7;
+            y -= 10;
         }
         if (Down == true) {
-            y += 7;
+            y += 10;
         }
     }
 
