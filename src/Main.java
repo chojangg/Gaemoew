@@ -1,7 +1,10 @@
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
@@ -56,5 +59,15 @@ public class Main {
 
         // 창 표시
         frame.setVisible(true);
+
+        try {
+            File file = new File("bgm/Little-Samba-Quincas-Moreira.wav");
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(file));
+            clip.start();
+        } catch (Exception e) {
+            System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+        }
+        new Main();
     }
 }
