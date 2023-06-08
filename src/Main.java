@@ -13,8 +13,9 @@ public class Main {
 
         // 창 생성
         JFrame frame = new JFrame("계묘년을 지켜라!");
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
+//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
         frame.setUndecorated(true);  // 타이틀 바 숨김
+        frame.setSize(1920, 1080);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // 이미지 패널 생성
@@ -69,8 +70,8 @@ public class Main {
             }
         });
 
-        imagePanel.add(startbtn);
         imagePanel.add(rulebtn);
+        imagePanel.add(startbtn);
 
         // 창 표시
         frame.setVisible(true);
