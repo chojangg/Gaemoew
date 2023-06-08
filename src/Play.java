@@ -9,7 +9,7 @@ class Game extends JFrame implements KeyListener, Runnable {
     int height = 1080;    //프레임 높이
     int x = 250, y = 500;  //플레이어 좌표 변수
     int score = 0;    //게임 점수
-    int life = 3;     //게임 생명
+    int life = 3;
 
     Game() {
         getimg();  //사진 불러오기
@@ -32,6 +32,10 @@ class Game extends JFrame implements KeyListener, Runnable {
     Image bat_img;          //방망이 이미지
     Image rock_img;         //장애물 이미지
     Image coin_img;         // 코인 이미지
+    Image heart0;           // 하트 0개
+    Image heart1;           // 하트 1개
+    Image heart2;           // 하트 2개
+    Image heart3;           // 하트 3개
 
     public void getimg() {
         try {
@@ -41,6 +45,10 @@ class Game extends JFrame implements KeyListener, Runnable {
             rabbit_img = new ImageIcon("src/image/rabbit.gif").getImage();
             background_img = new ImageIcon("src/image/background.png").getImage();
             explode_img = new ImageIcon("src/image/explode.png").getImage();
+            heart0 = new ImageIcon("src/image/heart/heart0.png").getImage();
+            heart1 = new ImageIcon("src/image/heart/heart1.png").getImage();
+            heart2 = new ImageIcon("src/image/heart/heart2.png").getImage();
+            heart3 = new ImageIcon("src/image/heart/heart3.png").getImage();
         } catch (Exception e){
             System.out.println("파일을 열 수 없습니다. ");
         }
@@ -82,6 +90,13 @@ class Game extends JFrame implements KeyListener, Runnable {
         public void move() {
             x -= rock_speed;     //장애물 7만큼 왼쪽으로 움직이기
         }
+    }
+
+    class Coin {
+        int x;
+        int y;
+
+
     }
 
     class Explode {
@@ -163,16 +178,19 @@ class Game extends JFrame implements KeyListener, Runnable {
             }
         }
         if (appear == 150) {   //무한 루프 150마다 장애물 등장
-            rock = new Rock(width + 100, 100);
-            arr_rock.add(rock);   //각 좌표에 만든 후 배열에 추가
-            rock = new Rock(width + 100, 250);
+            rock = new Rock(width + 100, 190);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 400);
+            rock = new Rock(width + 100, 340);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 550);
+            rock = new Rock(width + 100, 490);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 70);
+            rock = new Rock(width + 100, 640);
             arr_rock.add(rock);
+            rock = new Rock(width + 100, 790);
+            arr_rock.add(rock);
+            rock = new Rock(width + 100, 940);
+            arr_rock.add(rock);
+
             appear=0;   //appear 초기화
         }
 
@@ -233,6 +251,7 @@ class Game extends JFrame implements KeyListener, Runnable {
         bufferg.drawImage(rabbit_img, x, y, this);   // 토끼 그리기
         Print_Rock();
         Print_Bat();
+        Print_heart();
         Print_Explode();
         Print_Text();
         if(life==0){        //생명을 다 썼을 경우 게임 오버 창 출력
@@ -279,6 +298,18 @@ class Game extends JFrame implements KeyListener, Runnable {
                     bufferg.drawImage(explode_img, explosion.x + 120, explosion.y + 15, this);
                 }
             }
+        }
+    }
+
+    public void Print_heart(){     // 하트 출력
+        if(life==3){
+            bufferg.drawImage(heart3, 0,0,this);
+        } else if(life==2){
+            bufferg.drawImage(heart2, 0,0,this);
+        } else if(life==1){
+            bufferg.drawImage(heart1, 0,0,this);
+        } else {
+            bufferg.drawImage(heart0, 0,0,this);
         }
     }
 
