@@ -286,6 +286,18 @@ class Game extends JFrame implements KeyListener, Runnable {
         }
     }
 
+    public void Print_heart(){     // 하트 출력
+        if(life==3){
+            bufferg.drawImage(heart3, 50,30,this);
+        } else if(life==2){
+            bufferg.drawImage(heart2, 50,30,this);
+        } else if(life==1){
+            bufferg.drawImage(heart1, 50,30,this);
+        } else {
+            bufferg.drawImage(heart0, 50,30,this);
+        }
+    }
+
     public void Print_Explode() { //폭발 효과 출력
         for (int i = 0; i < arr_explosion.size(); ++i) {
             explosion = (Explode) arr_explosion.get(i);
@@ -298,18 +310,6 @@ class Game extends JFrame implements KeyListener, Runnable {
                     bufferg.drawImage(explode_img, explosion.x + 120, explosion.y + 15, this);
                 }
             }
-        }
-    }
-
-    public void Print_heart(){     // 하트 출력
-        if(life==3){
-            bufferg.drawImage(heart3, 0,0,this);
-        } else if(life==2){
-            bufferg.drawImage(heart2, 0,0,this);
-        } else if(life==1){
-            bufferg.drawImage(heart1, 0,0,this);
-        } else {
-            bufferg.drawImage(heart0, 0,0,this);
         }
     }
 
@@ -329,7 +329,6 @@ class Game extends JFrame implements KeyListener, Runnable {
         bufferg.drawString("<"+round+" ROUND>", 1680,100);    //라운드 표시
         bufferg.setFont(new Font("Arial", Font.BOLD, 20));  //폰트 설정
         bufferg.drawString("SCORE : " + score, 1685, 125);    //점수 표시
-        bufferg.drawString("LIFE : " + life, 1685, 150);      //생명 갯수 표시
         bufferg.setFont(new Font("굴림",Font.PLAIN,17));
     }
 

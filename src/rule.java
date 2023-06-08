@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class rule {
-    public static void main(String[] args) {
+public class rule extends JFrame {
+    public rule() {
         // 이미지 파일 경로
         String ruleimagePath = "src/image/rule.png";
 
@@ -64,5 +64,9 @@ public class rule {
         } catch (Exception e) {
             System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
         }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new rule());
     }
 }
