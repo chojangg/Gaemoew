@@ -6,10 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class rule {
+public class EndingFail {
     public static void main(String[] args) {
         // 이미지 파일 경로
-        String ruleimagePath = "src/image/rule.png";
+        String ruleimagePath = "src/image/ending_fail.gif";
 
         // 창 생성
         JFrame frame = new JFrame("게임성공");

@@ -14,12 +14,16 @@ class Game extends JFrame implements KeyListener, Runnable {
     Game() {
         getimg();  //사진 불러오기
         gogo();
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //프레임 창 닫을 시 프로그램 종료
+        setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
+        setUndecorated(true);  // 타이틀 바 숨김
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("계묘년을 지켜라!");  //프레임 이름
-        setSize(width, height);  //프레임 크기
         setResizable(false);
+        setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());  // 프레임 크기를 디스플레이 크기로 설정
+        pack();  // 컴포넌트의 크기에 맞게 프레임 크기 조정
         setVisible(true);
+
+
     }
 
     Image rabbit_img;       //플레이어 이미지

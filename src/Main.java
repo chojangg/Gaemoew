@@ -13,7 +13,8 @@ public class Main {
 
         // 창 생성
         JFrame frame = new JFrame("계묘년을 지켜라!");
-        frame.setSize(1920, 1080);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
+        frame.setUndecorated(true);  // 타이틀 바 숨김
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // 이미지 패널 생성
@@ -49,12 +50,12 @@ public class Main {
 
         // startBtn에 이벤트 리스너 추가
         startbtn.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Game();   // 화면 전환
             }
         });
+
         rulebtn.setBorder(BorderFactory.createEmptyBorder(780 , 0, 0 , 0));
         rulebtn.setRolloverIcon(ruleBtnIcon2); // 버튼에 마우스가 올라갈떄 이미지 변환
         rulebtn.setBorderPainted(false); // 버튼 테두리 설정해제
@@ -82,6 +83,5 @@ public class Main {
         } catch (Exception e) {
             System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
         }
-        new Main();
     }
 }
