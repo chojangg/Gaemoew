@@ -4,9 +4,9 @@ public class Ranking {
     public static void main(String[] args) {
         Connection con = null;
 
-        String server = "localhost"; // MySQL 서버 주소
-        String database = ""; // MySQL DATABASE 이름
-        String user_name = "root"; //  MySQL 서버 아이디
+        String server = "localhost:3307"; // MySQL 서버 주소
+        String database = "userInfoTbl"; // MySQL DATABASE 이름
+        String user_name = "root"; // MySQL 서버 아이디
         String password = "alflarhkgkrrh1!"; // MySQL 서버 비밀번호
 
         // 1.드라이버 로딩
@@ -32,5 +32,4 @@ public class Ranking {
                 con.close();
         } catch (SQLException e) {}
     }
-
 }

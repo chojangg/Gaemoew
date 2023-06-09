@@ -13,7 +13,7 @@ public class Main {
 
         // 창 생성
         JFrame frame = new JFrame("계묘년을 지켜라!");
-//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
         frame.setUndecorated(true);  // 타이틀 바 숨김
         frame.setSize(1920, 1080);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,7 +44,7 @@ public class Main {
         rulebtn.setContentAreaFilled(false);  // Content 영역 배경 투명 설정
         rulebtn.setBorderPainted(false);  // 테두리 제거
 
-        startbtn.setBorder(BorderFactory.createEmptyBorder(780 , 0, 0 , 0));
+        startbtn.setBorder(BorderFactory.createEmptyBorder(1000 , 0, 0 , 0));
         startbtn.setRolloverIcon(startBtnIcon2); // 버튼에 마우스가 올라갈떄 이미지 변환
         startbtn.setBorderPainted(false); // 버튼 테두리 설정해제
         startbtn.setContentAreaFilled(false);
@@ -57,7 +57,7 @@ public class Main {
             }
         });
 
-        rulebtn.setBorder(BorderFactory.createEmptyBorder(780 , 0, 0 , 0));
+        rulebtn.setBorder(BorderFactory.createEmptyBorder(1000 , 0, 0 , 0));
         rulebtn.setRolloverIcon(ruleBtnIcon2); // 버튼에 마우스가 올라갈떄 이미지 변환
         rulebtn.setBorderPainted(false); // 버튼 테두리 설정해제
         rulebtn.setContentAreaFilled(false);
