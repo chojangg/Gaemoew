@@ -15,7 +15,7 @@ Intellij, Java, GUI, Database
 ### 게임 방법
 
 --------------------
-![rule](https://user-images.githubusercontent.com/83991079/231720396-0fde3dd4-0d64-47f2-aaef-6235a37fe80b.png)
+![name](https://user-images.githubusercontent.com/83991079/231720396-0fde3dd4-0d64-47f2-aaef-6235a37fe80b.png)
 
 <br>
 

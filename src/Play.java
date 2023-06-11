@@ -23,7 +23,6 @@ class Game extends JFrame implements KeyListener, Runnable {
         pack();  // 컴포넌트의 크기에 맞게 프레임 크기 조정
         setVisible(true);
 
-
     }
 
     Image rabbit_img;       //플레이어 이미지
@@ -177,6 +176,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                 arr_explosion.add(explosion);   //충돌된 플레이어의 위치에 폭발 효과 넣기
             }
         }
+
         if (appear == 150) {   //무한 루프 150마다 장애물 등장
             rock = new Rock(width + 100, 190);
             arr_rock.add(rock);
@@ -251,6 +251,7 @@ class Game extends JFrame implements KeyListener, Runnable {
         bufferg.drawImage(rabbit_img, x, y, this);   // 토끼 그리기
         Print_Rock();
         Print_Bat();
+        Print_Coin();
         Print_heart();
         Print_Explode();
         Print_Text();
@@ -284,6 +285,10 @@ class Game extends JFrame implements KeyListener, Runnable {
             rock = (Rock) (arr_rock.get(i));
             bufferg.drawImage(rock_img, rock.x, rock.y-35, this);
         }
+    }
+
+    public void Print_Coin() {  // 코인 이미지 출력
+
     }
 
     public void Print_heart(){     // 하트 출력
