@@ -53,7 +53,10 @@ public class Main {
         startbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Game();   // 화면 전환
+                // Story 실행
+                Story.main(new String[0]);
+                // 현재 프레임 종료
+                frame.dispose();
             }
         });
 

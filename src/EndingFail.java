@@ -6,14 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class EndingFail {
-    public static void main(String[] args) {
+public class EndingFail extends JFrame {
+    public EndingFail() {
         // 이미지 파일 경로
         String ruleimagePath = "src/image/ending_fail.gif";
 
         // 창 생성
-        JFrame frame = new JFrame("게임성공");
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
+        JFrame frame = new JFrame("게임방법");
+        frame.setSize(1920, 1080);
+//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
         frame.setUndecorated(true);  // 타이틀 바 숨김
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -22,8 +23,8 @@ public class EndingFail {
         frame.add(imagePanel);
 
         // 이미지 버튼 생성
-        String startBtnPath = "src/image/button/start_button-01.png";
-        String startBtnPath2 = "src/image/button/start_button-02.png";
+        String startBtnPath = "src/image/button/start_button_small1.png";
+        String startBtnPath2 = "src/image/button/start_button_small2.png";
 
         ImageIcon startBtnIcon = new ImageIcon(startBtnPath);
         ImageIcon startBtnIcon2 = new ImageIcon(startBtnPath2);
@@ -34,17 +35,19 @@ public class EndingFail {
         startbtn.setContentAreaFilled(false);  // Content 영역 배경 투명 설정
         startbtn.setBorderPainted(false);  // 테두리 제거
 
-        startbtn.setBorder(BorderFactory.createEmptyBorder(0 , 0, 0 , 0));
+        startbtn.setBorder(BorderFactory.createEmptyBorder(800 , 1580, 0 , 0));
         startbtn.setRolloverIcon(startBtnIcon2); // 버튼에 마우스가 올라갈떄 이미지 변환
         startbtn.setBorderPainted(false); // 버튼 테두리 설정해제
         startbtn.setContentAreaFilled(false);
 
         // startBtn에 이벤트 리스너 추가
         startbtn.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Game();   // 화면 전환
+                // Story 실행
+                Play.main(new String[0]);
+                // 현재 프레임 종료
+                frame.dispose();
             }
         });
 
@@ -63,5 +66,9 @@ public class EndingFail {
         } catch (Exception e) {
             System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
         }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new EndingFail());
     }
 }

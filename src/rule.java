@@ -14,7 +14,7 @@ public class rule extends JFrame {
         // 창 생성
         JFrame frame = new JFrame("게임방법");
         frame.setSize(1920, 1080);
-//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
         frame.setUndecorated(true);  // 타이틀 바 숨김
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -42,10 +42,12 @@ public class rule extends JFrame {
 
         // startBtn에 이벤트 리스너 추가
         startbtn.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Game();   // 화면 전환
+                // Story 실행
+                Story.main(new String[0]);
+                // 현재 프레임 종료
+                frame.dispose();
             }
         });
 
