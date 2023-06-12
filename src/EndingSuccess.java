@@ -14,7 +14,7 @@ public class EndingSuccess extends JFrame {
         // 창 생성
         JFrame frame = new JFrame("게임방법");
         frame.setSize(1920, 1080);
-//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
         frame.setUndecorated(true);  // 타이틀 바 숨김
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

@@ -143,6 +143,8 @@ class Game extends JFrame implements KeyListener, Runnable {
                 else if(score==450){   //난이도는 5단계까지만
                     round=5;
                     rock_speed =20;
+                }else if(score==500) {
+                    EndingSuccess.main(new String[0]);
                 }
                 KeyWok();           //키보드 입력으로 x, y갱신
                 WorkGame();         //게임 동작 메소드
@@ -256,7 +258,7 @@ class Game extends JFrame implements KeyListener, Runnable {
         Print_Explode();
         Print_Text();
         if(life==0){        //생명을 다 썼을 경우 게임 오버 창 출력
-            Print_GAMEOVER();
+            EndingFail.main(new String[0]);
         }
         g.drawImage(bufferimg, 0, 0, this);   //화면에 버퍼에 그린 그림을 가져와 그리기
     }
@@ -315,17 +317,6 @@ class Game extends JFrame implements KeyListener, Runnable {
                     bufferg.drawImage(explode_img, explosion.x + 120, explosion.y + 15, this);
                 }
             }
-        }
-    }
-
-    public void Print_GAMEOVER(){   //게임오버
-        bufferg.setFont(new Font("Arial", Font.BOLD, 80));    //폰트 설정
-        bufferg.drawString("GAME OVER", 500,200);
-        bufferg.setFont(new Font("Arial", Font.BOLD, 55));    //폰트 설정
-        bufferg.drawString("SCORE : "+score, 600,300);
-
-        if(life==0){
-            ch_break=1;
         }
     }
 
