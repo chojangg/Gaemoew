@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 
 public class showRanking extends JFrame {
@@ -24,7 +25,7 @@ public class showRanking extends JFrame {
                 String playerName = resultSet.getString("uname");
                 int score = resultSet.getInt("uscore");
 
-                rankingBuilder.append(rank).append(". ").append(playerName).append(": ").append(score).append("\n");
+                rankingBuilder.append("      ").append(rank).append(". ").append(playerName).append("\t").append(score).append("점").append("\n\n\n");
                 rank++;
             }
 
@@ -71,18 +72,36 @@ public class showRanking extends JFrame {
             e.printStackTrace();
         }
 
-        // 랭킹 텍스트 영역 생성
-        rankingTextArea = new JTextArea(10, 20);
-        rankingTextArea.setEditable(false);
-        rankingTextArea.setFont(new Font("Malgun Gothic", Font.PLAIN, 16)); // 한국어를 지원하는 폰트로 변경
+        // font 설정
+        Font font = null;
+        try {
+            File fontFile = new File("src/font/font.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
 
-        // 랭킹 텍스트 영역을 스크롤 가능한 패널에 추가
+        // 랭킹 텍스트 영역 생성
+        rankingTextArea = new JTextArea(13, 20);
+        rankingTextArea.setOpaque(false); // 배경 투명 설정
+        rankingTextArea.setEditable(false);
+        Font customFont = font.deriveFont(55f); // 원하는 폰트 크기로 설정
+        rankingTextArea.setFont(customFont); // 폰트 적용
+
+        // 랭킹 텍스트 영역을 스크롤 불가능한 패널에 추가
         JScrollPane scrollPane = new JScrollPane(rankingTextArea);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
         // 이미지 패널에 스크롤 패널 추가 및 정렬 설정
         imagePanel.setLayout(new GridBagLayout());
         imagePanel.add(scrollPane, new GridBagConstraints());
+        scrollPane.setOpaque(false); // 스크롤 패널 배경을 투명하게 설정
+        scrollPane.getViewport().setOpaque(false); // 스크롤 패널의 내용 영역 배경을 투명
+
+        SwingUtilities.invokeLater(() -> {
+            // 스크롤바 위치를 최상단으로 설정
+            rankingTextArea.setCaretPosition(0);
+        });
 
         // 창 표시
         frame.setVisible(true);
