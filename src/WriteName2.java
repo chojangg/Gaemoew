@@ -16,6 +16,9 @@ public class WriteName2 extends JFrame {
         if (name != null && !name.isEmpty()) {
             System.out.println("입력된 이름: " + name);
         }
+
+        // Play.java 실행
+        Play.main(new String[]{});
     }
 
     public static void main(String[] args) {

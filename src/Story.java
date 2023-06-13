@@ -39,7 +39,7 @@ public class Story {
                 // Close the frame
                 frame.dispose();
                 // Start the Play screen
-                Play.main(new String[0]);
+                WriteName2.main(new String[0]);
             }
         });
 
