@@ -5,8 +5,47 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.*;
 
 public class showRanking extends JFrame {
+    private Connection connection;
+    private JTextArea rankingTextArea;
+
+    private void retrieveRankingFromDatabase() {
+        String query = "SELECT * FROM gaemoewtbl ORDER BY uscore DESC LIMIT 5";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            StringBuilder rankingBuilder = new StringBuilder();
+            int rank = 1;
+            while (resultSet.next()) {
+                String playerName = resultSet.getString("uname");
+                int score = resultSet.getInt("uscore");
+
+                rankingBuilder.append(rank).append(". ").append(playerName).append(": ").append(score).append("\n");
+                rank++;
+            }
+
+            rankingTextArea.setText(rankingBuilder.toString());
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // 데이터베이스 연결 종료
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public showRanking() {
         // 이미지 파일 경로
         String ruleimagePath = "src/image/top5.png";
@@ -22,51 +61,41 @@ public class showRanking extends JFrame {
         ImagePanel imagePanel = new ImagePanel(ruleimagePath);
         frame.add(imagePanel);
 
-        // 이미지 버튼 생성
-        String skipBtnPath = "src/image/button/skip_button-01.png";
-        String skipBtnPath2 = "src/image/button/skip_button-02.png";
+        // 데이터베이스 연결
+        try {
+            String url = "jdbc:mysql://localhost:3308/sys";
+            String username = "root";
+            String password = "alflarhkgkrrh1!";
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        ImageIcon startBtnIcon = new ImageIcon(skipBtnPath);
-        ImageIcon startBtnIcon2 = new ImageIcon(skipBtnPath2);
+        // 랭킹 텍스트 영역 생성
+        rankingTextArea = new JTextArea(10, 20);
+        rankingTextArea.setEditable(false);
+        rankingTextArea.setFont(new Font("Malgun Gothic", Font.PLAIN, 16)); // 한국어를 지원하는 폰트로 변경
 
-        JButton skipbtn = new JButton(startBtnIcon);
+        // 랭킹 텍스트 영역을 스크롤 가능한 패널에 추가
+        JScrollPane scrollPane = new JScrollPane(rankingTextArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        skipbtn.setOpaque(false);  // 배경 투명 설정
-        skipbtn.setContentAreaFilled(false);  // Content 영역 배경 투명 설정
-        skipbtn.setBorderPainted(false);  // 테두리 제거
-
-        skipbtn.setBorder(BorderFactory.createEmptyBorder(1190 , 2150, 0 , 0));
-        skipbtn.setRolloverIcon(startBtnIcon2); // 버튼에 마우스가 올라갈떄 이미지 변환
-        skipbtn.setBorderPainted(false); // 버튼 테두리 설정해제
-        skipbtn.setContentAreaFilled(false);
-
-        // skipbtn에 이벤트 리스너 추가
-        skipbtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 홈으로 가기
-                Main.main(new String[0]);
-                // 현재 프레임 종료
-                frame.dispose();
-            }
-        });
-
-        // 이미지 패널에 버튼 추가 및 정렬 설정
+        // 이미지 패널에 스크롤 패널 추가 및 정렬 설정
         imagePanel.setLayout(new GridBagLayout());
-        imagePanel.add(skipbtn, new GridBagConstraints());
+        imagePanel.add(scrollPane, new GridBagConstraints());
 
         // 창 표시
         frame.setVisible(true);
 
         try {
-            File file = new File("bgm/Little-Samba-Quincas-Moreira.wav");
-            Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(file));
-            clip.start();
+            // 데이터베이스에서 랭킹 정보 가져오기
+            retrieveRankingFromDatabase();
         } catch (Exception e) {
-            System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+            e.printStackTrace();
         }
     }
+
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new showRanking());
