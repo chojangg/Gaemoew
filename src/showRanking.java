@@ -53,7 +53,13 @@ public class showRanking extends JFrame {
 
         // 창 생성
         JFrame frame = new JFrame("Rank");
-        frame.setSize(1920, 1080);
+        // 모니터 크기 가져오기
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
+
+        // 창 크기 설정
+        frame.setSize(screenWidth, screenHeight);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
         frame.setUndecorated(true);  // 타이틀 바 숨김
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
