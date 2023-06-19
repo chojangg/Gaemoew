@@ -74,6 +74,8 @@ class Game extends JFrame implements KeyListener, Runnable {
     Rock rock;           //장애물 클래스
     Coin coin;           //코인 클래스
     Explode explosion;   //폭발 클래스
+    Spark spark;   //폭발 클래스
+
     class Bat {
         int x;  //화살 좌표
         int y;
@@ -137,6 +139,22 @@ class Game extends JFrame implements KeyListener, Runnable {
         }
     }
 
+    class Spark {
+        int x;  //폭발 효과 좌표
+        int y;
+        int maintain_int; //폭발 효과가 유지되는 시간을 위한 변수
+
+        Spark(int x, int y) {
+            this.x = x;
+            this.y = y;
+            maintain_int = 0;
+        }
+
+        public void maintain() {
+            maintain_int++;     //유지될 타임 변수 카운트
+        }
+    }
+
     int rock_speed =7;
     int coin_speed = 20;
     int round=1;
@@ -186,6 +204,7 @@ class Game extends JFrame implements KeyListener, Runnable {
     ArrayList arr_rock = new ArrayList();
     ArrayList arr_coin = new ArrayList();
     ArrayList arr_explosion = new ArrayList();
+    ArrayList arr_spark = new ArrayList();
     public void WorkGame() {
         //장애물 동작
         for (int i = 0; i < arr_rock.size(); ++i) {
@@ -272,6 +291,8 @@ class Game extends JFrame implements KeyListener, Runnable {
 
             if (Crash_check(x, y, coin.x, coin.y, rabbit_img, coin_img)==1) {    //플레이어가 장애물과 충돌했을 때
                 score += 20;
+                spark = new Spark(coin.x + coin_img.getWidth(null) / 2, coin.y + coin_img.getHeight(null) / 2);
+                arr_spark.add(spark);
                 try {
                     File file = new File("src/bgm/plus.wav");
                     Clip clip = AudioSystem.getClip();
@@ -281,7 +302,6 @@ class Game extends JFrame implements KeyListener, Runnable {
                     System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
                 }
                 arr_coin.remove(i);
-                bufferg.drawImage(rabbit_img, x, y, this);   // 토끼 그리기
             }
         }
 
@@ -298,6 +318,11 @@ class Game extends JFrame implements KeyListener, Runnable {
         for (int i = 0; i < arr_explosion.size(); ++i) {
             explosion = (Explode) arr_explosion.get(i);
             explosion.maintain();
+        }
+
+        for (int i = 0; i < arr_spark.size(); ++i) {
+            spark = (Spark) arr_spark.get(i);
+            spark.maintain();
         }
     }
 
@@ -329,6 +354,7 @@ class Game extends JFrame implements KeyListener, Runnable {
         Print_Coin();
         Print_heart();
         Print_Explode();
+        Print_Spark();
         Print_Text();
         if(life==0){        //생명을 다 썼을 경우 게임 오버 창 출력
             dispose();
@@ -397,6 +423,15 @@ class Game extends JFrame implements KeyListener, Runnable {
         }
     }
 
+    public void Print_Spark() { //폭발 효과 출력
+        for (int i = 0; i < arr_spark.size(); ++i) {
+            spark = (Spark) arr_spark.get(i);
+            if (spark.maintain_int < 8) {   //8번 반복될 동안 폭발 효과 유지시키기
+                 bufferg.drawImage(sparkle_img, x+150, y+30, this);
+            }
+        }
+    }
+
     public void Print_Text() {
         // 폰트 설정
         Font font = null;
@@ -409,11 +444,11 @@ class Game extends JFrame implements KeyListener, Runnable {
 
         bufferg.setColor(Color.WHITE);  // 폰트 색상 설정
 
-        bufferg.setFont(font.deriveFont(Font.PLAIN, 40));  // 폰트 설정
-        bufferg.drawString("<" + round + " ROUND>", 1670, 100);  // 라운드 표시
+        bufferg.setFont(font.deriveFont(Font.PLAIN, 50));  // 폰트 설정
+        bufferg.drawString("<" + round + " ROUND>", 1550, 110);  // 라운드 표시
 
-        bufferg.setFont(font.deriveFont(Font.PLAIN, 37));  // 폰트 설정
-        bufferg.drawString("SCORE : " + score, 1685, 150);  // 점수 표시
+        bufferg.setFont(font.deriveFont(Font.PLAIN, 45));  // 폰트 설정
+        bufferg.drawString("SCORE : " + score, 1570, 170);  // 점수 표시
     }
 
 
