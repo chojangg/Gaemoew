@@ -26,15 +26,6 @@ class Game extends JFrame implements KeyListener, Runnable {
         pack();  // 컴포넌트의 크기에 맞게 프레임 크기 조정
         setVisible(true);
 
-        try {
-            File file = new File("src/bgm/Little-Samba-Quincas-Moreira.wav");
-            Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(file));
-            clip.start();
-        } catch (Exception e) {
-            System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
-        }
-
     }
 
     Image rabbit_img;       //플레이어 이미지
@@ -181,6 +172,14 @@ class Game extends JFrame implements KeyListener, Runnable {
 
             if (Crash_check(x, y, rock.x, rock.y, rabbit_img, rock_img)==1) {    //플레이어가 장애물과 충돌했을 때
                 life--;    //생명 하나 줄기
+                try {
+                    File file = new File("src/bgm/hurt.wav");
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(AudioSystem.getAudioInputStream(file));
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                }
                 arr_rock.remove(i);   //해당 장애물 삭제
 
                 explosion = new Explode(rock.x + rock_img.getWidth(null) / 2, rock.y + rock_img.getHeight(null) / 2, 0);
@@ -286,6 +285,7 @@ class Game extends JFrame implements KeyListener, Runnable {
         Print_Text();
         if(life==0){        //생명을 다 썼을 경우 게임 오버 창 출력
             EndingFail.main(new String[0]);
+
         }
         g.drawImage(bufferimg, 0, 0, this);   //화면에 버퍼에 그린 그림을 가져와 그리기
     }

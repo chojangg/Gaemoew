@@ -7,6 +7,7 @@ public class Story {
     public static void main(String[] args) {
         // Create a JFrame to hold the GIF
         JFrame frame = new JFrame();
+        frame.setUndecorated(true);  // 타이틀 바 숨김
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -36,10 +37,10 @@ public class Story {
         Timer timer = new Timer(gifDuration, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Close the frame
-                frame.dispose();
                 // Start the Play screen
                 WriteName2.main(new String[0]);
+                // Close the frame
+                frame.dispose();
             }
         });
 

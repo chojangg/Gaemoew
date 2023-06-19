@@ -70,6 +70,8 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new rule();
+                // 현재 프레임 종료
+                frame.dispose();
             }
         });
 
