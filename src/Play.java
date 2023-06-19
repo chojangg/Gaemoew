@@ -1,7 +1,10 @@
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.*;
 
 class Game extends JFrame implements KeyListener, Runnable {
@@ -22,6 +25,15 @@ class Game extends JFrame implements KeyListener, Runnable {
         setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());  // 프레임 크기를 디스플레이 크기로 설정
         pack();  // 컴포넌트의 크기에 맞게 프레임 크기 조정
         setVisible(true);
+
+        try {
+            File file = new File("src/bgm/Little-Samba-Quincas-Moreira.wav");
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(file));
+            clip.start();
+        } catch (Exception e) {
+            System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+        }
 
     }
 
