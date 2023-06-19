@@ -59,7 +59,7 @@ public class EndingFail extends JFrame {
         frame.setVisible(true);
 
         try {
-            File file = new File("src/bgm/Little-Samba-Quincas-Moreira.wav");
+            File file = new File("src/bgm/sad.wav");
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(file));
             clip.start();

@@ -12,7 +12,7 @@ public class EndingSuccess extends JFrame {
         String ruleimagePath = "src/image/ending_success.gif";
 
         // 창 생성
-        JFrame frame = new JFrame("게임방법");
+        JFrame frame = new JFrame("Success");
         frame.setSize(1920, 1080);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
         frame.setUndecorated(true);  // 타이틀 바 숨김
@@ -59,7 +59,7 @@ public class EndingSuccess extends JFrame {
         frame.setVisible(true);
 
         try {
-            File file = new File("bgm/Little-Samba-Quincas-Moreira.wav");
+            File file = new File("src/bgm/victory.wav");
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(file));
             clip.start();

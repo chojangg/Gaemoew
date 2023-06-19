@@ -212,6 +212,14 @@ class Game extends JFrame implements KeyListener, Runnable {
                 bat = new Bat(x + 150, y + 30);
                 arr_bat.add(bat);
                 shoot = 0;
+                try {
+                    File file = new File("src/bgm/space.wav");
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(AudioSystem.getAudioInputStream(file));
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                }
             }
         }
 
@@ -227,6 +235,15 @@ class Game extends JFrame implements KeyListener, Runnable {
                     score += 10;  //점수 +10
                     explosion = new Explode(rock.x + rock_img.getWidth(null) / 2, rock.y + rock_img.getHeight(null) / 2, 0);
                     arr_explosion.add(explosion);
+                    try {
+                        File file = new File("src/bgm/hit.wav");
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(AudioSystem.getAudioInputStream(file));
+                        clip.start();
+                    } catch (Exception e) {
+                        System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                    }
+
                 }
             }
         }
