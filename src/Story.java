@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Story {
+    private static final int GIF_DURATION = 500; // GIF 지속 시간
+    private static final int COUNTDOWN_DURATION = 2000; // 카운트 다운 지속 시간
+
     public static void main(String[] args) {
         // GIF를 보여줄 JFrame 생성
         JFrame frame = new JFrame();
@@ -27,20 +30,54 @@ public class Story {
         // 커스텀 패널의 레이아웃을 중앙 정렬로 설정하여 배경 이미지를 가운데로 정렬
         panel.setLayout(new BorderLayout());
 
-        // 일정 시간 후에 프레임을 닫고 Play 화면 시작
-        int gifDuration = 4000; // GIF 지속 시간 (4초)
-        Timer timer = new Timer(gifDuration, new ActionListener() {
+        // 카운트 다운 레이블 생성
+        JLabel countdownLabel = new JLabel();
+        countdownLabel.setFont(new Font("Arial", Font.BOLD, 150));
+        countdownLabel.setVerticalAlignment(SwingConstants.TOP);
+        countdownLabel.setForeground(Color.WHITE);
+        countdownLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(countdownLabel, BorderLayout.CENTER);
+
+        // 카운트 다운 시작
+        Timer countdownTimer = new Timer(900, new ActionListener() {
+            private int count = 3;
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 프레임 닫기
-                frame.dispose();
-                WriteName2.main(new String[0]);
+                countdownLabel.setText(String.valueOf(count));
+                if (count == 0) {
+                    ((Timer) e.getSource()).stop(); // 카운트 다운 종료
+                    panel.remove(countdownLabel); // 레이블 제거
+
+                    // 일정 시간 후에 프레임을 닫고 Play 화면 시작
+                    Timer gifTimer = new Timer(GIF_DURATION, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // 프레임 닫기
+                            frame.dispose();
+                            WriteName2.main(new String[0]);
+                        }
+                    });
+
+                    // 타이머 시작
+                    gifTimer.setRepeats(false);
+                    gifTimer.start();
+                }
+                count--;
+            }
+        });
+
+        // 카운트 다운 시작을 COUNTDOWN_DURATION(ms) 이후로 지연
+        Timer startTimer = new Timer(COUNTDOWN_DURATION, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                countdownTimer.start(); // 카운트 다운 시작
             }
         });
 
         // 타이머 시작
-        timer.setRepeats(false);
-        timer.start();
+        startTimer.setRepeats(false);
+        startTimer.start();
 
         // 커스텀 패널을 프레임의 콘텐트 패널로 설정
         frame.setContentPane(panel);
