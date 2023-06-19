@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 class Game extends JFrame implements KeyListener, Runnable {
@@ -191,7 +192,7 @@ class Game extends JFrame implements KeyListener, Runnable {
         }
 
         if (appear == 150) {   //무한 루프 150마다 장애물 등장
-            rock = new Rock(width + 100, 190);
+            rock = new Rock(width + 100, 180);
             arr_rock.add(rock);
             rock = new Rock(width + 100, 350);
             arr_rock.add(rock);
@@ -348,12 +349,26 @@ class Game extends JFrame implements KeyListener, Runnable {
     }
 
     public void Print_Text() {  //게임 진행 상황 보여주기
-        bufferg.setFont(new Font("Arial", Font.BOLD, 25));  //폰트 설정
-        bufferg.drawString("<"+round+" ROUND>", 1680,100);    //라운드 표시
-        bufferg.setFont(new Font("Arial", Font.BOLD, 20));  //폰트 설정
-        bufferg.drawString("SCORE : " + score, 1685, 125);    //점수 표시
-        bufferg.setFont(new Font("굴림",Font.PLAIN,17));
+        // 폰트 설정
+        Font font = null;
+        try {
+            File fontFile = new File("src/font/engfont.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
+
+        bufferg.setColor(Color.WHITE);  // 폰트 색상 설정
+
+        bufferg.setFont(font.deriveFont(Font.PLAIN, 40));  // 폰트 설정
+        bufferg.drawString("<" + round + " ROUND>", 1670, 100);  // 라운드 표시
+
+        bufferg.setFont(font.deriveFont(Font.PLAIN, 37));  // 폰트 설정
+        bufferg.drawString("SCORE : " + score, 1685, 150);  // 점수 표시
+
+        bufferg.setFont(new Font("굴림", Font.PLAIN, 17));
     }
+
 
     // 키보드 입력
     boolean Up = false;
