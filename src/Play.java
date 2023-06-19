@@ -1,6 +1,7 @@
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -14,6 +15,9 @@ class Game extends JFrame implements KeyListener, Runnable {
     int x = 250, y = 490;  //플레이어 좌표 변수
     int score = 0;    //게임 점수
     int life = 3;
+    private Timer timer;
+    private int coin_random;    // 코인 랜덤 y좌표
+    Random random = new Random();
 
     Game() {
         getimg();  //사진 불러오기
@@ -32,6 +36,7 @@ class Game extends JFrame implements KeyListener, Runnable {
     Image rabbit_img;       //플레이어 이미지
     Image background_img;   //배경화면 이미지
     Image explode_img;      //폭발 이미지
+    Image sparkle_img;      //반짝이
     Image bat_img;          //방망이 이미지
     Image rock_img;         //장애물 이미지
     Image coin_img;         // 코인 이미지
@@ -48,6 +53,7 @@ class Game extends JFrame implements KeyListener, Runnable {
             rabbit_img = new ImageIcon("src/image/rabbit.gif").getImage();
             background_img = new ImageIcon("src/image/background.png").getImage();
             explode_img = new ImageIcon("src/image/explode.png").getImage();
+            sparkle_img = new ImageIcon("src/image/sparkle.png").getImage();
             heart0 = new ImageIcon("src/image/heart/heart0.png").getImage();
             heart1 = new ImageIcon("src/image/heart/heart1.png").getImage();
             heart2 = new ImageIcon("src/image/heart/heart2.png").getImage();
@@ -66,6 +72,7 @@ class Game extends JFrame implements KeyListener, Runnable {
 
     Bat bat;           //방망이 클래스
     Rock rock;           //장애물 클래스
+    Coin coin;           //코인 클래스
     Explode explosion;   //폭발 클래스
     class Bat {
         int x;  //화살 좌표
@@ -99,6 +106,15 @@ class Game extends JFrame implements KeyListener, Runnable {
         int x;
         int y;
 
+        Coin(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void move(){
+            x -= coin_speed;
+        }
+
 
     }
 
@@ -122,9 +138,11 @@ class Game extends JFrame implements KeyListener, Runnable {
     }
 
     int rock_speed =7;
+    int coin_speed = 20;
     int round=1;
     int shoot=0;    //연속으로 발사 조절하기 위한 카운트 변수
     int appear=1;   //장애물 등장 간격 카운트 변수
+    int coin_appear=1;  //코인 등장 간격 카운트 변수
     int ch_break=0;
     public void run() {  //스레드 무한루프되는 부분
         try {   //예외옵션 설정으로 에러 방지
@@ -147,7 +165,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                 else if(score==450){   //난이도는 5단계까지만
                     round=5;
                     rock_speed =20;
-                }else if(score==500) {
+                }else if(score<=500 && life==0) {
                     dispose();
                     EndingSuccess.main(new String[0]);
                 }
@@ -157,6 +175,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                 Thread.sleep(20);  //20mill sec의 속도로 스레드 돌리기
                 shoot++;    //연속 발사 위해 횟수 카운트
                 appear++;   //장애물 등장 간격 위해 횟수 카운트
+                coin_appear++;  //코인 등장 간격 위해 횟수 카운트
             }
         } catch (Exception e) {
             System.out.println("오류가 발생하였습니다. ");
@@ -165,6 +184,7 @@ class Game extends JFrame implements KeyListener, Runnable {
 
     ArrayList arr_bat = new ArrayList();
     ArrayList arr_rock = new ArrayList();
+    ArrayList arr_coin = new ArrayList();
     ArrayList arr_explosion = new ArrayList();
     public void WorkGame() {
         //장애물 동작
@@ -184,11 +204,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                 }
                 arr_rock.remove(i);   //해당 장애물 삭제
 
-                explosion = new Explode(rock.x + rock_img.getWidth(null) / 2, rock.y + rock_img.getHeight(null) / 2, 0);
-                //적의 현재 중심 좌표와 폭발 상황 "0" 받기
-                arr_explosion.add(explosion);   //충돌된 적의 위치에 폭발 효과 넣기
-                explosion = new Explode(x, y, 1); //플레이어의 현재 좌표와 폭발 상황 "1" 받기
-                arr_explosion.add(explosion);   //충돌된 플레이어의 위치에 폭발 효과 넣기
+
             }
         }
 
@@ -248,6 +264,35 @@ class Game extends JFrame implements KeyListener, Runnable {
                 }
             }
         }
+
+        // 코인 동작
+        for (int i = 0; i < arr_coin.size(); ++i) {
+            coin = (Coin) (arr_coin.get(i));   //배열에 장애물이 만들어져있을 때 해당되는 장애물
+            coin.move();  //해당 장애물 움직이기
+
+            if (Crash_check(x, y, coin.x, coin.y, rabbit_img, coin_img)==1) {    //플레이어가 장애물과 충돌했을 때
+                score += 20;
+                try {
+                    File file = new File("src/bgm/plus.wav");
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(AudioSystem.getAudioInputStream(file));
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                }
+                arr_coin.remove(i);
+                bufferg.drawImage(rabbit_img, x, y, this);   // 토끼 그리기
+            }
+        }
+
+        if (coin_appear == 250) {   //무한 루프 250마다 코인 등장
+            coin_random = random.nextInt(850 - 180 + 1) + 180;
+            coin = new Coin(width + 100, coin_random);
+            arr_coin.add(coin);
+
+            coin_appear=0;   //appear 초기화
+        }
+
 
         //폭발 효과
         for (int i = 0; i < arr_explosion.size(); ++i) {
@@ -319,7 +364,10 @@ class Game extends JFrame implements KeyListener, Runnable {
     }
 
     public void Print_Coin() {  // 코인 이미지 출력
-
+        for (int i = 0; i < arr_coin.size(); ++i) {
+            coin = (Coin) (arr_coin.get(i));
+            bufferg.drawImage(coin_img, coin.x, coin.y, this);
+        }
     }
 
     public void Print_heart(){     // 하트 출력
@@ -349,7 +397,7 @@ class Game extends JFrame implements KeyListener, Runnable {
         }
     }
 
-    public void Print_Text() {  //게임 진행 상황 보여주기
+    public void Print_Text() {
         // 폰트 설정
         Font font = null;
         try {
@@ -366,8 +414,6 @@ class Game extends JFrame implements KeyListener, Runnable {
 
         bufferg.setFont(font.deriveFont(Font.PLAIN, 37));  // 폰트 설정
         bufferg.drawString("SCORE : " + score, 1685, 150);  // 점수 표시
-
-        bufferg.setFont(new Font("굴림", Font.PLAIN, 17));
     }
 
 

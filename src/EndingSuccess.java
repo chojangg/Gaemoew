@@ -81,7 +81,7 @@ public class EndingSuccess extends JFrame {
         frame.setVisible(true);
 
         try {
-            File file = new File("src/bgm/sad.wav");
+            File file = new File("src/bgm/victory.wav");
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(file));
             clip.start();
