@@ -84,7 +84,7 @@ public class WriteName2 extends JDialog {
                 System.out.println("이름이 입력되지 않았습니다.");
             }
 
-            Main.main(new String[]{}); // Main.java 파일 실행
+            Play.main(new String[]{}); // Play.java 파일 실행
             dispose(); // 현재 창 닫기
         });
     }
