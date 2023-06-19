@@ -148,6 +148,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                     round=5;
                     rock_speed =20;
                 }else if(score==500) {
+                    dispose();
                     EndingSuccess.main(new String[0]);
                 }
                 KeyWok();           //키보드 입력으로 x, y갱신
@@ -285,8 +286,8 @@ class Game extends JFrame implements KeyListener, Runnable {
         Print_Explode();
         Print_Text();
         if(life==0){        //생명을 다 썼을 경우 게임 오버 창 출력
+            dispose();
             EndingFail.main(new String[0]);
-
         }
         g.drawImage(bufferimg, 0, 0, this);   //화면에 버퍼에 그린 그림을 가져와 그리기
     }
