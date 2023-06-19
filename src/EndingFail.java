@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class EndingFail extends JFrame {
     public class ImagePanel extends JPanel {
@@ -86,6 +88,23 @@ public class EndingFail extends JFrame {
         } catch (Exception e) {
             System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
         }
+
+        // 3초 후에 showRanking.java 파일 실행
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                showRanking();
+                frame.dispose(); // 현재 창 닫기
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(task, 3000);
+    }
+
+    private void showRanking() {
+        SwingUtilities.invokeLater(() -> {
+            showRanking.main(new String[0]);
+        });
     }
 
     public static void main(String[] args) {
