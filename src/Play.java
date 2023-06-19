@@ -10,7 +10,7 @@ import java.util.*;
 class Game extends JFrame implements KeyListener, Runnable {
     int width = 1920;    //프레임 가로
     int height = 1080;    //프레임 높이
-    int x = 250, y = 500;  //플레이어 좌표 변수
+    int x = 250, y = 490;  //플레이어 좌표 변수
     int score = 0;    //게임 점수
     int life = 3;
 
@@ -194,15 +194,13 @@ class Game extends JFrame implements KeyListener, Runnable {
         if (appear == 150) {   //무한 루프 150마다 장애물 등장
             rock = new Rock(width + 100, 190);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 340);
+            rock = new Rock(width + 100, 350);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 490);
+            rock = new Rock(width + 100, 520);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 640);
+            rock = new Rock(width + 100, 680);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 790);
-            arr_rock.add(rock);
-            rock = new Rock(width + 100, 940);
+            rock = new Rock(width + 100, 850);
             arr_rock.add(rock);
 
             appear=0;   //appear 초기화
@@ -346,10 +344,10 @@ class Game extends JFrame implements KeyListener, Runnable {
     boolean Space = false;
     public void KeyWok() {
         //키보드 입력 방향으로 플레이어 5씩 이동
-        if (Up == true) {
+        if (Up == true && y>0) {
             y -= 10;
         }
-        if (Down == true) {
+        if (Down == true && y<1080) {
             y += 10;
         }
     }
