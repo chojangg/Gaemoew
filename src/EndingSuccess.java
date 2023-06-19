@@ -7,14 +7,34 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class EndingSuccess extends JFrame {
+    public class ImagePanel extends JPanel {
+        private Image image;
+
+        public ImagePanel(String imagePath) {
+            this.image = new ImageIcon(imagePath).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
+            int imageWidth = image.getWidth(this);
+            int imageHeight = image.getHeight(this);
+            int x = (panelWidth - imageWidth) / 2;
+            int y = (panelHeight - imageHeight) / 2;
+            g.drawImage(image, x, y, this);
+        }
+    }
+
     public EndingSuccess() {
         // 이미지 파일 경로
         String ruleimagePath = "src/image/ending_success.gif";
 
         // 창 생성
-        JFrame frame = new JFrame("Success");
+        JFrame frame = new JFrame("게임방법");
         frame.setSize(1920, 1080);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
+//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
         frame.setUndecorated(true);  // 타이틀 바 숨김
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -59,7 +79,7 @@ public class EndingSuccess extends JFrame {
         frame.setVisible(true);
 
         try {
-            File file = new File("src/bgm/victory.wav");
+            File file = new File("src/bgm/sad.wav");
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(file));
             clip.start();

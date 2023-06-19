@@ -7,6 +7,26 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class EndingFail extends JFrame {
+    public class ImagePanel extends JPanel {
+        private Image image;
+
+        public ImagePanel(String imagePath) {
+            this.image = new ImageIcon(imagePath).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
+            int imageWidth = image.getWidth(this);
+            int imageHeight = image.getHeight(this);
+            int x = (panelWidth - imageWidth) / 2;
+            int y = (panelHeight - imageHeight) / 2;
+            g.drawImage(image, x, y, this);
+        }
+    }
+
     public EndingFail() {
         // 이미지 파일 경로
         String ruleimagePath = "src/image/ending_fail.gif";

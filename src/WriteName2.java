@@ -24,10 +24,22 @@ public class WriteName2 extends JFrame {
         if (name != null && !name.isEmpty()) {
             System.out.println("입력된 이름: " + name);
             insertNameToDatabase(name); // 데이터베이스에 이름 삽입
+        } else {
+            System.out.println("이름이 입력되지 않았습니다.");
         }
 
-        // Play.java 실행
-        Play.main(new String[]{});
+        if (name != null) { // 사용자가 입력을 취소하지 않았을 경우
+            if (!name.isEmpty()) {  // 이름이 비어있지 않은 경우
+                // Play.java 실행
+                Play.main(new String[]{});
+            } else {    // 이름이 비어있는 경우
+                // Main.java 실행
+                Main.main(new String[]{});
+            }
+        } else {    // 사용자가 입력을 취소한 경우
+            // Main.java 실행
+            Main.main(new String[]{});
+        }
     }
 
     private void insertNameToDatabase(String name) {

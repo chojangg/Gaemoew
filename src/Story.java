@@ -7,14 +7,13 @@ public class Story {
     public static void main(String[] args) {
         // GIF를 보여줄 JFrame 생성
         JFrame frame = new JFrame();
-        frame.setSize(1920, 1080);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setUndecorated(true);  // 타이틀 바 숨김
 
         // 기본 그래픽 디바이스 가져오기
         GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
         // 프레임 크기를 화면 크기와 동일하게 설정
-        frame.setSize(graphicsDevice.getDisplayMode().getWidth(), graphicsDevice.getDisplayMode().getHeight());
+        frame.setSize(1920, 1080);
 
         // 프레임 위치를 (0, 0)으로 설정
         frame.setLocation(0, 0);
@@ -23,7 +22,7 @@ public class Story {
         CustomPanel panel = new CustomPanel("src/image/story_text.png");
 
         // 커스텀 패널 크기를 프레임 크기와 동일하게 설정
-        panel.setSize(frame.getSize());
+        panel.setSize(1920, 1080);
 
         // 커스텀 패널의 레이아웃을 중앙 정렬로 설정하여 배경 이미지를 가운데로 정렬
         panel.setLayout(new BorderLayout());
@@ -35,7 +34,6 @@ public class Story {
             public void actionPerformed(ActionEvent e) {
                 // 프레임 닫기
                 frame.dispose();
-                // Play 화면 시작
                 WriteName2.main(new String[0]);
             }
         });
@@ -43,9 +41,6 @@ public class Story {
         // 타이머 시작
         timer.setRepeats(false);
         timer.start();
-
-        // 프레임을 전체 화면으로 설정
-        graphicsDevice.setFullScreenWindow(frame);
 
         // 커스텀 패널을 프레임의 콘텐트 패널로 설정
         frame.setContentPane(panel);
