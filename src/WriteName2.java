@@ -1,3 +1,5 @@
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.FontFormatException;
@@ -84,6 +86,14 @@ public class WriteName2 extends JDialog {
                 System.out.println("이름이 입력되지 않았습니다.");
             }
 
+            try {
+                File file = new File("src/bgm/start.wav");
+                Clip clip = AudioSystem.getClip();
+                clip.open(AudioSystem.getAudioInputStream(file));
+                clip.start();
+            } catch (Exception ee) {
+                System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+            }
             Play.main(new String[]{}); // Play.java 파일 실행
             dispose(); // 현재 창 닫기
         });
