@@ -44,39 +44,6 @@ public class EndingSuccess extends JFrame {
         ImagePanel imagePanel = new ImagePanel(ruleimagePath);
         frame.add(imagePanel);
 
-        // 이미지 버튼 생성
-        String startBtnPath = "src/image/button/start_button_small1.png";
-        String startBtnPath2 = "src/image/button/start_button_small2.png";
-
-        ImageIcon startBtnIcon = new ImageIcon(startBtnPath);
-        ImageIcon startBtnIcon2 = new ImageIcon(startBtnPath2);
-
-        JButton startbtn = new JButton(startBtnIcon);
-
-        startbtn.setOpaque(false);  // 배경 투명 설정
-        startbtn.setContentAreaFilled(false);  // Content 영역 배경 투명 설정
-        startbtn.setBorderPainted(false);  // 테두리 제거
-
-        startbtn.setBorder(BorderFactory.createEmptyBorder(800 , 1580, 0 , 0));
-        startbtn.setRolloverIcon(startBtnIcon2); // 버튼에 마우스가 올라갈떄 이미지 변환
-        startbtn.setBorderPainted(false); // 버튼 테두리 설정해제
-        startbtn.setContentAreaFilled(false);
-
-        // startBtn에 이벤트 리스너 추가
-        startbtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Story 실행
-                Play.main(new String[0]);
-                // 현재 프레임 종료
-                frame.dispose();
-            }
-        });
-
-        // 이미지 패널에 버튼 추가 및 정렬 설정
-        imagePanel.setLayout(new GridBagLayout());
-        imagePanel.add(startbtn, new GridBagConstraints());
-
         // 창 표시
         frame.setVisible(true);
 
