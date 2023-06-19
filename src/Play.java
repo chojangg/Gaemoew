@@ -376,10 +376,10 @@ class Game extends JFrame implements KeyListener, Runnable {
     boolean Space = false;
     public void KeyWok() {
         //키보드 입력 방향으로 플레이어 5씩 이동
-        if (Up == true && y>0) {
+        if (Up == true && y>100) {
             y -= 10;
         }
-        if (Down == true && y<1080) {
+        if (Down == true && y<900) {
             y += 10;
         }
     }
