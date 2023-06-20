@@ -16,6 +16,8 @@ public class WriteName2 extends JDialog {
     private static final String DB_USER = "root"; // 데이터베이스 사용자 이름
     private static final String DB_PASSWORD = "alflarhkgkrrh1!"; // 데이터베이스 비밀번호
 
+    private String name;
+
     public WriteName2() {
         // Font 설정
         Font font = null;
@@ -94,12 +96,13 @@ public class WriteName2 extends JDialog {
             } catch (Exception ee) {
                 System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
             }
-            Play.main(new String[]{}); // Play.java 파일 실행
+            Play.main(new String[]{name}); // Play.java 파일 실행
             dispose(); // 현재 창 닫기
         });
     }
 
     private void insertNameToDatabase(String name) {
+        this.name = name;
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
             String query = "INSERT INTO gaemoewtbl (uname) VALUES (?)"; // 테이블 이름 및 컬럼명에 맞게 수정
             try (PreparedStatement stmt = conn.prepareStatement(query)) {

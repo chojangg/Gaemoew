@@ -54,7 +54,6 @@ public class showRanking extends JFrame {
         // 창 생성
         JFrame frame = new JFrame("Rank");
 
-
         // 창 크기 설정
         frame.setSize(1920, 1080);
         frame.setUndecorated(true);  // 타이틀 바 숨김
@@ -119,18 +118,22 @@ public class showRanking extends JFrame {
         rankingTextArea = new JTextArea(13, 20);
         rankingTextArea.setOpaque(false); // 배경 투명 설정
         rankingTextArea.setEditable(false);
-        Font customFont = font.deriveFont(55f); // 원하는 폰트 크기로 설정
+        Font customFont = font.deriveFont(53f); // 원하는 폰트 크기로 설정
         rankingTextArea.setFont(customFont); // 폰트 적용
 
         // 랭킹 텍스트 영역을 스크롤 불가능한 패널에 추가
-        JScrollPane scrollPane = new JScrollPane(rankingTextArea);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        JPanel rankingPanel = new JPanel(new BorderLayout());
+        rankingPanel.setOpaque(false);
+        rankingPanel.add(rankingTextArea);
 
         // 이미지 패널에 스크롤 패널 추가 및 정렬 설정
         imagePanel.setLayout(new GridBagLayout());
-        imagePanel.add(scrollPane, new GridBagConstraints());
-        scrollPane.setOpaque(false); // 스크롤 패널 배경을 투명하게 설정
-        scrollPane.getViewport().setOpaque(false); // 스크롤 패널의 내용 영역 배경을 투명
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0; // 왼쪽 정렬
+        constraints.gridy = 0; // 상단 정렬
+        constraints.gridwidth = GridBagConstraints.REMAINDER; // 한 줄에 하나의 컴포넌트만
+        imagePanel.add(rankingPanel, constraints);
+        rankingPanel.setBorder(BorderFactory.createEmptyBorder(150, 0, 20, 20)); // 텍스트 영역 여백 설정
 
         SwingUtilities.invokeLater(() -> {
             // 스크롤바 위치를 최상단으로 설정

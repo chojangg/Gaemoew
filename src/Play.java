@@ -7,7 +7,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.util.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 class Game extends JFrame implements KeyListener, Runnable {
     int width = 1920;    //프레임 가로
@@ -344,7 +348,22 @@ class Game extends JFrame implements KeyListener, Runnable {
     }
 
     public void update(Graphics g) {
-        Print_Background(); //배경 이미지 그리기
+
+        String url = "jdbc:mysql://localhost:3308/sys";
+        String username = "root";
+        String password = "alflarhkgkrrh1!";
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(url, username, password);
+            // Connection established
+            // You can perform database operations using the "connection" object
+        } catch (SQLException e) {
+            // Connection failed
+            e.printStackTrace();
+        }
+
+        Print_Background(); // 배경 이미지 그리기
         bufferg.drawImage(rabbit_img, x, y, this);   // 토끼 그리기
         Print_Rock();
         Print_Bat();
@@ -353,15 +372,46 @@ class Game extends JFrame implements KeyListener, Runnable {
         Print_Explode();
         Print_Spark();
         Print_Text();
-        if(life==0 && score<500){        //생명을 다 썼을 경우 게임 오버 창 출력
+
+        if (life == 0 && score < 500) {        // 생명을 다 썼을 경우 게임 오버 창 출력
+            try {
+                String query = "UPDATE gaemoewtbl SET uscore = ? WHERE uname = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setInt(1, score);
+                statement.setString(2, Play.getName());
+                statement.executeUpdate();
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             dispose();
             EndingFail.main(new String[0]);
-        }else if(life==0 && score>=500) {
+        } else if (life == 0 && score >= 500) {
+            try {
+                String query = "UPDATE gaemoewtbl SET uscore = ? WHERE uname = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setInt(1, score);
+                statement.setString(2, Play.getName());
+                statement.executeUpdate();
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             dispose();
             EndingSuccess.main(new String[0]);
         }
-        g.drawImage(bufferimg, 0, 0, this);   //화면에 버퍼에 그린 그림을 가져와 그리기
+        g.drawImage(bufferimg, 0, 0, this);   // 화면에 버퍼에 그린 그림을 가져와 그리기
+
+        // 데이터베이스 연결 종료
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
 
     int move_background = 0;   //배경 움직이는 효과 위한 변수
     public void Print_Background() {    //배경 이미지 출력
@@ -501,7 +551,19 @@ class Game extends JFrame implements KeyListener, Runnable {
 }
 
 public class Play {
-    public static void main(String[] ar) {
+    private static String name;
+
+    public static void main(String[] args) {
+        if (args.length > 0) {
+            name = args[0];
+            System.out.println("이름: " + name);
+        }
         Game game = new Game();
+        // 이후에 name 변수를 사용할 수 있음
+    }
+
+    public static String getName() {
+        return name;
     }
 }
+
