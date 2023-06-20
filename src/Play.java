@@ -232,7 +232,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                 rock = (Rock) (arr_rock.get(i));   //배열에 장애물이 만들어져있을 때 해당되는 장애물
                 rock.move();  //해당 장애물 움직이기
 
-                if (Crash_check(x, y, rock.x, rock.y, rabbit_img, rock_img)==1) {    //플레이어가 장애물과 충돌했을 때
+                if (Crash_check(x, y, rock.x-20, rock.y-20, rabbit_img, rock_img)==1) {    //플레이어가 장애물과 충돌했을 때
                     life--;    //생명 하나 줄기
                     try {
                         File file = new File("src/bgm/hurt.wav");
@@ -270,7 +270,7 @@ class Game extends JFrame implements KeyListener, Runnable {
 
             //화살쏘기
             if (Space) {
-                if (shoot > 25) {   //화살 연속 발사 간격 조절  //간격을 15번 쯤으로 맞추고 발사
+                if (shoot > 25) {   //화살 연속 발사 간격 조절  //간격을 25번 쯤으로 맞추고 발사
                     bat = new Bat(x + 200, y + 30);
                     arr_bat.add(bat);
                     shoot = 0;
