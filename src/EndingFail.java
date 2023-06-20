@@ -2,13 +2,15 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class EndingFail extends JFrame {
+    private Clip clip;
+
     public class ImagePanel extends JPanel {
         private Image image;
 
@@ -36,7 +38,6 @@ public class EndingFail extends JFrame {
         // 창 생성
         JFrame frame = new JFrame("게임방법");
         frame.setSize(1920, 1080);
-//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
         frame.setUndecorated(true);  // 타이틀 바 숨김
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -49,12 +50,20 @@ public class EndingFail extends JFrame {
 
         try {
             File file = new File("src/bgm/sad.wav");
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(file));
             clip.start();
         } catch (Exception e) {
             System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
         }
+
+        // 창 종료 이벤트 처리
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                stopMusic();
+            }
+        });
 
         // 3초 후에 showRanking.java 파일 실행
         TimerTask task = new TimerTask() {
@@ -66,6 +75,13 @@ public class EndingFail extends JFrame {
         };
         Timer timer = new Timer();
         timer.schedule(task, 3000);
+    }
+
+    private void stopMusic() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+            clip.close();
+        }
     }
 
     private void showRanking() {
