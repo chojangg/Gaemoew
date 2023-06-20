@@ -159,7 +159,7 @@ class Game extends JFrame implements KeyListener, Runnable {
         }
     }
 
-    int rock_speed =7;
+    int rock_speed =25;
     int coin_speed = 20;
     int round=1;
     int shoot=0;    //연속으로 발사 조절하기 위한 카운트 변수
@@ -172,21 +172,21 @@ class Game extends JFrame implements KeyListener, Runnable {
                 if(ch_break==1){
                     break;
                 }
-                if(score==100){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
+                if(score==200){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
                     round=2;
-                    rock_speed =14;
+                    rock_speed =30;
                 }
-                else if(score==250){
+                else if(score==400){
                     round=3;
-                    rock_speed =16;
+                    rock_speed =40;
                 }
-                else if(score==350){
+                else if(score==600){
                     round=4;
-                    rock_speed =18;
+                    rock_speed =48;
                 }
-                else if(score==450){   //난이도는 5단계까지만
+                else if(score==1000){   //난이도는 5단계까지만
                     round=5;
-                    rock_speed =20;
+                    rock_speed =55;
                 }
                 KeyWok();           //키보드 입력으로 x, y갱신
                 WorkGame();         //게임 동작 메소드
@@ -228,25 +228,46 @@ class Game extends JFrame implements KeyListener, Runnable {
             }
         }
 
+        int min = 100; // 최소값
+        int max = 1000; // 최대값
+        int interval = 200; // 간격
+        int randomNumber = random.nextInt((max - min + interval) / interval) * interval + min;
+
         if (appear == 150) {   //무한 루프 150마다 장애물 등장
-            rock = new Rock(width + 100, 180);
+            rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 200);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 350);
+            rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 450);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 520);
+            rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 700);
             arr_rock.add(rock);
-            rock = new Rock(width + 100, 680);
-            arr_rock.add(rock);
-            rock = new Rock(width + 100, 850);
+            rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 900);
             arr_rock.add(rock);
 
             appear=0;   //appear 초기화
         }
 
+//        int min = 100; // 최소값
+//        int max = 1000; // 최대값
+//        int interval = 100; // 간격
+//        int randomNumber = random.nextInt((max - min + interval) / interval) * interval + min;
+//
+//        if (appear == 150) {   //무한 루프 150마다 장애물 등장
+//            rock = new Rock(width + randomNumber, 200);
+//            arr_rock.add(rock);
+//            rock = new Rock(width + randomNumber, 450);
+//            arr_rock.add(rock);
+//            rock = new Rock(width + randomNumber, 700);
+//            arr_rock.add(rock);
+//            rock = new Rock(width + randomNumber, 900);
+//            arr_rock.add(rock);
+//
+//            appear=0;   //appear 초기화
+//        }
+
         //화살쏘기
         if (Space) {
-            if (shoot > 15) {   //화살 연속 발사 간격 조절  //간격을 15번 쯤으로 맞추고 발사
-                bat = new Bat(x + 150, y + 30);
+            if (shoot > 30) {   //화살 연속 발사 간격 조절  //간격을 15번 쯤으로 맞추고 발사
+                bat = new Bat(x + 200, y + 30);
                 arr_bat.add(bat);
                 shoot = 0;
                 try {
@@ -477,7 +498,7 @@ class Game extends JFrame implements KeyListener, Runnable {
         for (int i = 0; i < arr_spark.size(); ++i) {
             spark = (Spark) arr_spark.get(i);
             if (spark.maintain_int < 8) {   //8번 반복될 동안 폭발 효과 유지시키기
-                 bufferg.drawImage(sparkle_img, x+150, y+30, this);
+                bufferg.drawImage(sparkle_img, spark.x - 100, spark.y - 50, this);
             }
         }
     }
@@ -509,10 +530,10 @@ class Game extends JFrame implements KeyListener, Runnable {
     public void KeyWok() {
         //키보드 입력 방향으로 플레이어 5씩 이동
         if (Up == true && y>100) {
-            y -= 10;
+            y -= 15;
         }
         if (Down == true && y<900) {
-            y += 10;
+            y += 15;
         }
     }
 
