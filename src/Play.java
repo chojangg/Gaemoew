@@ -24,6 +24,7 @@ class Game extends JFrame implements KeyListener, Runnable {
     Random random = new Random();
 
     Game() {
+        music();
         getimg();  //사진 불러오기
         gogo();
         setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
@@ -48,6 +49,24 @@ class Game extends JFrame implements KeyListener, Runnable {
     Image heart1;           // 하트 1개
     Image heart2;           // 하트 2개
     Image heart3;           // 하트 3개
+
+    public void music() {
+        if(life != 0){
+            // 배경음악
+            try {
+                File file = new File("src/bgm/Little-Samba-Quincas-Moreira.wav");
+                Clip clip = AudioSystem.getClip();
+                clip.open(AudioSystem.getAudioInputStream(file));
+                clip.start();
+                if(life == 0){
+                    clip.stop();
+                }
+            } catch (Exception e) {
+                System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+            }
+        }
+
+    }
 
     public void getimg() {
         try {
@@ -159,8 +178,8 @@ class Game extends JFrame implements KeyListener, Runnable {
         }
     }
 
-    int rock_speed =25;
-    int coin_speed = 20;
+    int rock_speed =20;
+    int coin_speed = 25;
     int round=1;
     int shoot=0;    //연속으로 발사 조절하기 위한 카운트 변수
     int appear=1;   //장애물 등장 간격 카운트 변수
@@ -174,19 +193,19 @@ class Game extends JFrame implements KeyListener, Runnable {
                 }
                 if(score==200){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
                     round=2;
-                    rock_speed =30;
+                    rock_speed =26;
                 }
                 else if(score==400){
                     round=3;
-                    rock_speed =40;
+                    rock_speed =35;
                 }
                 else if(score==600){
                     round=4;
-                    rock_speed =48;
+                    rock_speed =43;
                 }
                 else if(score==1000){   //난이도는 5단계까지만
                     round=5;
-                    rock_speed =55;
+                    rock_speed =50;
                 }
                 KeyWok();           //키보드 입력으로 x, y갱신
                 WorkGame();         //게임 동작 메소드
@@ -207,44 +226,45 @@ class Game extends JFrame implements KeyListener, Runnable {
     ArrayList arr_explosion = new ArrayList();
     ArrayList arr_spark = new ArrayList();
     public void WorkGame() {
-        //장애물 동작
-        for (int i = 0; i < arr_rock.size(); ++i) {
-            rock = (Rock) (arr_rock.get(i));   //배열에 장애물이 만들어져있을 때 해당되는 장애물
-            rock.move();  //해당 장애물 움직이기
+        if(life != 0){
+            //장애물 동작
+            for (int i = 0; i < arr_rock.size(); ++i) {
+                rock = (Rock) (arr_rock.get(i));   //배열에 장애물이 만들어져있을 때 해당되는 장애물
+                rock.move();  //해당 장애물 움직이기
 
-            if (Crash_check(x, y, rock.x, rock.y, rabbit_img, rock_img)==1) {    //플레이어가 장애물과 충돌했을 때
-                life--;    //생명 하나 줄기
-                try {
-                    File file = new File("src/bgm/hurt.wav");
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(AudioSystem.getAudioInputStream(file));
-                    clip.start();
-                } catch (Exception e) {
-                    System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                if (Crash_check(x, y, rock.x, rock.y, rabbit_img, rock_img)==1) {    //플레이어가 장애물과 충돌했을 때
+                    life--;    //생명 하나 줄기
+                    try {
+                        File file = new File("src/bgm/hurt.wav");
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(AudioSystem.getAudioInputStream(file));
+                        clip.start();
+                    } catch (Exception e) {
+                        System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                    }
+                    arr_rock.remove(i);   //해당 장애물 삭제
+
+
                 }
-                arr_rock.remove(i);   //해당 장애물 삭제
-
-
             }
-        }
 
-        int min = 100; // 최소값
-        int max = 1000; // 최대값
-        int interval = 200; // 간격
-        int randomNumber = random.nextInt((max - min + interval) / interval) * interval + min;
+            int min = 100; // 최소값
+            int max = 1000; // 최대값
+            int interval = 200; // 간격
+            int randomNumber = random.nextInt((max - min + interval) / interval) * interval + min;
 
-        if (appear == 150) {   //무한 루프 150마다 장애물 등장
-            rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 200);
-            arr_rock.add(rock);
-            rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 450);
-            arr_rock.add(rock);
-            rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 700);
-            arr_rock.add(rock);
-            rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 900);
-            arr_rock.add(rock);
+            if (appear == 100) {   //무한 루프 150마다 장애물 등장
+                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 200);
+                arr_rock.add(rock);
+                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 450);
+                arr_rock.add(rock);
+                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 700);
+                arr_rock.add(rock);
+                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 900);
+                arr_rock.add(rock);
 
-            appear=0;   //appear 초기화
-        }
+                appear=0;   //appear 초기화
+            }
 
 //        int min = 100; // 최소값
 //        int max = 1000; // 최대값
@@ -264,88 +284,90 @@ class Game extends JFrame implements KeyListener, Runnable {
 //            appear=0;   //appear 초기화
 //        }
 
-        //화살쏘기
-        if (Space) {
-            if (shoot > 30) {   //화살 연속 발사 간격 조절  //간격을 15번 쯤으로 맞추고 발사
-                bat = new Bat(x + 200, y + 30);
-                arr_bat.add(bat);
-                shoot = 0;
-                try {
-                    File file = new File("src/bgm/space.wav");
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(AudioSystem.getAudioInputStream(file));
-                    clip.start();
-                } catch (Exception e) {
-                    System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
-                }
-            }
-        }
-
-        for (int i = 0; i < arr_bat.size(); ++i) {
-            bat = (Bat) arr_bat.get(i);
-            bat.move();
-            for (int j = 0; j < arr_rock.size(); ++j) {
-                rock = (Rock) arr_rock.get(j);
-                if (Crash_check(bat.x, bat.y, rock.x, rock.y, bat_img, rock_img)==1) {
-                    //장애물에 맞을 경우
-                    arr_bat.remove(i);
-                    arr_rock.remove(j);
-                    score += 10;  //점수 +10
-                    explosion = new Explode(rock.x + rock_img.getWidth(null) / 2, rock.y + rock_img.getHeight(null) / 2, 0);
-                    arr_explosion.add(explosion);
+            //화살쏘기
+            if (Space) {
+                if (shoot > 25) {   //화살 연속 발사 간격 조절  //간격을 15번 쯤으로 맞추고 발사
+                    bat = new Bat(x + 200, y + 30);
+                    arr_bat.add(bat);
+                    shoot = 0;
                     try {
-                        File file = new File("src/bgm/hit.wav");
+                        File file = new File("src/bgm/space.wav");
                         Clip clip = AudioSystem.getClip();
                         clip.open(AudioSystem.getAudioInputStream(file));
                         clip.start();
                     } catch (Exception e) {
                         System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
                     }
-
                 }
+            }
+
+            for (int i = 0; i < arr_bat.size(); ++i) {
+                bat = (Bat) arr_bat.get(i);
+                bat.move();
+                for (int j = 0; j < arr_rock.size(); ++j) {
+                    rock = (Rock) arr_rock.get(j);
+                    if (Crash_check(bat.x, bat.y, rock.x, rock.y, bat_img, rock_img)==1) {
+                        //장애물에 맞을 경우
+                        arr_bat.remove(i);
+                        arr_rock.remove(j);
+                        score += 10;  //점수 +10
+                        explosion = new Explode(rock.x + rock_img.getWidth(null) / 2, rock.y + rock_img.getHeight(null) / 2, 0);
+                        arr_explosion.add(explosion);
+                        try {
+                            File file = new File("src/bgm/hit.wav");
+                            Clip clip = AudioSystem.getClip();
+                            clip.open(AudioSystem.getAudioInputStream(file));
+                            clip.start();
+                        } catch (Exception e) {
+                            System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                        }
+
+                    }
+                }
+            }
+
+            // 코인 동작
+            for (int i = 0; i < arr_coin.size(); ++i) {
+                coin = (Coin) (arr_coin.get(i));   //배열에 장애물이 만들어져있을 때 해당되는 장애물
+                coin.move();  //해당 장애물 움직이기
+
+                if (Crash_check(x, y, coin.x, coin.y, rabbit_img, coin_img)==1) {    //플레이어가 장애물과 충돌했을 때
+                    score += 15;
+                    spark = new Spark(coin.x + coin_img.getWidth(null) / 2, coin.y + coin_img.getHeight(null) / 2);
+                    arr_spark.add(spark);
+                    try {
+                        File file = new File("src/bgm/plus.wav");
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(AudioSystem.getAudioInputStream(file));
+                        clip.start();
+                    } catch (Exception e) {
+                        System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                    }
+                    arr_coin.remove(i);
+                }
+            }
+
+            if (coin_appear == 250) {   //무한 루프 250마다 코인 등장
+                coin_random = random.nextInt(850 - 180 + 1) + 180;
+                coin = new Coin(width + 100, coin_random);
+                arr_coin.add(coin);
+
+                coin_appear=0;   //appear 초기화
+            }
+
+
+            //폭발 효과
+            for (int i = 0; i < arr_explosion.size(); ++i) {
+                explosion = (Explode) arr_explosion.get(i);
+                explosion.maintain();
+            }
+
+            for (int i = 0; i < arr_spark.size(); ++i) {
+                spark = (Spark) arr_spark.get(i);
+                spark.maintain();
             }
         }
 
-        // 코인 동작
-        for (int i = 0; i < arr_coin.size(); ++i) {
-            coin = (Coin) (arr_coin.get(i));   //배열에 장애물이 만들어져있을 때 해당되는 장애물
-            coin.move();  //해당 장애물 움직이기
-
-            if (Crash_check(x, y, coin.x, coin.y, rabbit_img, coin_img)==1) {    //플레이어가 장애물과 충돌했을 때
-                score += 20;
-                spark = new Spark(coin.x + coin_img.getWidth(null) / 2, coin.y + coin_img.getHeight(null) / 2);
-                arr_spark.add(spark);
-                try {
-                    File file = new File("src/bgm/plus.wav");
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(AudioSystem.getAudioInputStream(file));
-                    clip.start();
-                } catch (Exception e) {
-                    System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
-                }
-                arr_coin.remove(i);
-            }
-        }
-
-        if (coin_appear == 250) {   //무한 루프 250마다 코인 등장
-            coin_random = random.nextInt(850 - 180 + 1) + 180;
-            coin = new Coin(width + 100, coin_random);
-            arr_coin.add(coin);
-
-            coin_appear=0;   //appear 초기화
-        }
-
-
-        //폭발 효과
-        for (int i = 0; i < arr_explosion.size(); ++i) {
-            explosion = (Explode) arr_explosion.get(i);
-            explosion.maintain();
-        }
-
-        for (int i = 0; i < arr_spark.size(); ++i) {
-            spark = (Spark) arr_spark.get(i);
-            spark.maintain();
-        }
     }
 
     public int Crash_check(int x1, int y1, int x2, int y2, Image img1, Image img2) {  //충돌 메소드

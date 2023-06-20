@@ -80,13 +80,5 @@ public class Main {
         // 창 표시
         frame.setVisible(true);
 
-        try {
-            File file = new File("src/bgm/Little-Samba-Quincas-Moreira.wav");
-            Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(file));
-            clip.start();
-        } catch (Exception e) {
-            System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
-        }
     }
 }
