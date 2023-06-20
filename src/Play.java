@@ -256,13 +256,13 @@ class Game extends JFrame implements KeyListener, Runnable {
             if (appear == 100) {   //무한 루프 150마다 장애물 등장
                 rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 200);
                 arr_rock.add(rock);
-                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 400);
+                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 388);
                 arr_rock.add(rock);
-                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 550);
+                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 576);
                 arr_rock.add(rock);
-                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 650);
+                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 764);
                 arr_rock.add(rock);
-                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 900);
+                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 950);
                 arr_rock.add(rock);
 
                 appear=0;   //appear 초기화
