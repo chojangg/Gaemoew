@@ -25,7 +25,8 @@ public class showRanking extends JFrame {
                 String playerName = resultSet.getString("uname");
                 int score = resultSet.getInt("uscore");
 
-                rankingBuilder.append("      ").append(rank).append(". ").append(playerName).append("\t").append(score).append("점").append("\n\n\n");
+                rankingBuilder.append(String.format("    %1d. %-20s\t%10s점", rank, playerName, score)).append("\n\n\n");
+
                 rank++;
             }
 
