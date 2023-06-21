@@ -25,7 +25,7 @@ public class showRanking extends JFrame {
                 String playerName = resultSet.getString("uname");
                 int score = resultSet.getInt("uscore");
 
-                rankingBuilder.append(String.format("    %1d. %-20s\t%10s점", rank, playerName, score)).append("\n\n\n");
+                rankingBuilder.append(String.format("    %1d. %-30s\t%10s점", rank, playerName, score)).append("\n\n\n");
 
                 rank++;
             }
@@ -98,7 +98,7 @@ public class showRanking extends JFrame {
 
         // 데이터베이스 연결
         try {
-            String url = "jdbc:mysql://localhost:3308/sys";
+            String url = "jdbc:mysql://localhost:3306/sys";
             String username = "root";
             String password = "alflarhkgkrrh1!";
             connection = DriverManager.getConnection(url, username, password);

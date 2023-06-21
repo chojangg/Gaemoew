@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class WriteName2 extends JDialog {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3308/sys"; // 데이터베이스 URL
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/sys"; // 데이터베이스 URL
     private static final String DB_USER = "root"; // 데이터베이스 사용자 이름
     private static final String DB_PASSWORD = "alflarhkgkrrh1!"; // 데이터베이스 비밀번호
 
@@ -64,7 +64,7 @@ public class WriteName2 extends JDialog {
         constraints.insets = new Insets(20, 20, 20, 20);
 
         JLabel nameLabel = new JLabel("이름을 입력해주세요.");
-        nameLabel.setFont(font.deriveFont(Font.PLAIN, 45));
+        nameLabel.setFont(font.deriveFont(Font.PLAIN, 55));
         panel.add(nameLabel, constraints);
 
         constraints.gridy = 1;

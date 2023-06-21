@@ -376,7 +376,7 @@ class Game extends JFrame implements KeyListener, Runnable {
 
     public void update(Graphics g) {
 
-        String url = "jdbc:mysql://localhost:3308/sys";
+        String url = "jdbc:mysql://localhost:3306/sys";
         String username = "root";
         String password = "alflarhkgkrrh1!";
         Connection connection = null;
