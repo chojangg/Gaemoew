@@ -19,7 +19,6 @@ class Game extends JFrame implements KeyListener, Runnable {
     int x = 250, y = 490;  //플레이어 좌표 변수
     int score = 0;    //게임 점수
     int life = 3;
-    private Timer timer;
     private int coin_random;    // 코인 랜덤 y좌표
     Random random = new Random();
 
@@ -45,10 +44,7 @@ class Game extends JFrame implements KeyListener, Runnable {
     Image bat_img;          //방망이 이미지
     Image rock_img;         //장애물 이미지
     Image coin_img;         // 코인 이미지
-    Image heart0;           // 하트 0개
     Image heart1;           // 하트 1개
-    Image heart2;           // 하트 2개
-    Image heart3;           // 하트 3개
 
     public void music() {
         if(life != 0){
@@ -77,10 +73,7 @@ class Game extends JFrame implements KeyListener, Runnable {
             background_img = new ImageIcon("src/image/background.png").getImage();
             explode_img = new ImageIcon("src/image/explode.png").getImage();
             sparkle_img = new ImageIcon("src/image/sparkle.png").getImage();
-            heart0 = new ImageIcon("src/image/heart/heart0.png").getImage();
-            heart1 = new ImageIcon("src/image/heart/heart1.png").getImage();
-            heart2 = new ImageIcon("src/image/heart/heart2.png").getImage();
-            heart3 = new ImageIcon("src/image/heart/heart3.png").getImage();
+            heart1 = new ImageIcon("src/image/heart/heart.png").getImage();
         } catch (Exception e){
             System.out.println("파일을 열 수 없습니다. ");
         }
@@ -96,6 +89,7 @@ class Game extends JFrame implements KeyListener, Runnable {
     Bat bat;           //방망이 클래스
     Rock rock;           //장애물 클래스
     Coin coin;           //코인 클래스
+    Heart heart;         //하트 클래스
     Explode explosion;   //폭발 클래스
     Spark spark;   //폭발 클래스
 
@@ -139,8 +133,20 @@ class Game extends JFrame implements KeyListener, Runnable {
         public void move(){
             x -= coin_speed;
         }
+    }
 
+    class Heart {
+        int x;
+        int y;
 
+        Heart(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void move(){
+            x -= heart_speed;
+        }
     }
 
     class Explode {
@@ -180,10 +186,12 @@ class Game extends JFrame implements KeyListener, Runnable {
 
     int rock_speed =20;
     int coin_speed = 25;
+    int heart_speed = 35;
     int round=1;
     int shoot=0;    //연속으로 발사 조절하기 위한 카운트 변수
     int appear=1;   //장애물 등장 간격 카운트 변수
     int coin_appear=1;  //코인 등장 간격 카운트 변수
+    int heart_appear=1;  //하트 등장 간격 카운트 변수
     int ch_break=0;
     public void run() {  //스레드 무한루프되는 부분
         try {   //예외옵션 설정으로 에러 방지
@@ -214,6 +222,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                 shoot++;    //연속 발사 위해 횟수 카운트
                 appear++;   //장애물 등장 간격 위해 횟수 카운트
                 coin_appear++;  //코인 등장 간격 위해 횟수 카운트
+                heart_appear++;  //하트 등장 간격 위해 횟수 카운트
             }
         } catch (Exception e) {
             System.out.println("오류가 발생하였습니다. ");
@@ -223,6 +232,7 @@ class Game extends JFrame implements KeyListener, Runnable {
     ArrayList arr_bat = new ArrayList();
     ArrayList arr_rock = new ArrayList();
     ArrayList arr_coin = new ArrayList();
+    ArrayList arr_heart = new ArrayList<>();
     ArrayList arr_explosion = new ArrayList();
     ArrayList arr_spark = new ArrayList();
     public void WorkGame() {
@@ -338,6 +348,26 @@ class Game extends JFrame implements KeyListener, Runnable {
 
                 coin_appear=0;   //appear 초기화
             }
+
+            // 하트
+            for (int i = 0; i < arr_heart.size(); ++i) {
+                heart = (Heart) (arr_heart.get(i));   //배열에 장애물이 만들어져있을 때 해당되는 장애물
+                heart.move();  //해당 장애물 움직이기
+
+                if (Crash_check(x, y, heart.x, heart.y, rabbit_img, heart1)==1) {    //플레이어가 장애물과 충돌했을 때
+                    life ++;
+                    arr_heart.remove(i);
+                }
+            }
+
+            if (heart_appear == 500) {   //무한 루프 250마다 코인 등장
+                coin_random = random.nextInt(850 - 180 + 1) + 180;
+                heart = new Heart(width + 100, coin_random);
+                arr_heart.add(heart);
+
+                heart_appear=0;   //appear 초기화
+            }
+
 
 
             //폭발 효과
@@ -474,15 +504,17 @@ class Game extends JFrame implements KeyListener, Runnable {
     }
 
     public void Print_heart(){     // 하트 출력
-        if(life==3){
-            bufferg.drawImage(heart3, 50,30,this);
-        } else if(life==2){
-            bufferg.drawImage(heart2, 50,30,this);
-        } else if(life==1){
-            bufferg.drawImage(heart1, 50,30,this);
-        } else {
-            bufferg.drawImage(heart0, 50,30,this);
+        int x=50;
+        for(int i=1; i<=life; i++){
+            bufferg.drawImage(heart1, x,30,this);
+            x+=80;
         }
+
+        for (int i = 0; i < arr_heart.size(); ++i) {
+            heart = (Heart) (arr_heart.get(i));
+            bufferg.drawImage(heart1, heart.x, heart.y, this);
+        }
+
     }
 
     public void Print_Explode() { //폭발 효과 출력
