@@ -360,7 +360,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                 }
             }
 
-            if (heart_appear == 500) {   //무한 루프 250마다 코인 등장
+            if (heart_appear == 500 & life!=3) {   //무한 루프 250마다 코인 등장
                 coin_random = random.nextInt(850 - 180 + 1) + 180;
                 heart = new Heart(width + 100, coin_random);
                 arr_heart.add(heart);
