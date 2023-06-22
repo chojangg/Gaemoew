@@ -258,24 +258,22 @@ class Game extends JFrame implements KeyListener, Runnable {
                 }
             }
 
-            int min = 100; // 최소값
-            int max = 1000; // 최대값
-            int interval = 200; // 간격
-            int randomNumber = random.nextInt((max - min + interval) / interval) * interval + min;
+            int xmin = 1600; // 최소값
+            int xmax = 2000; // 최대값
+            int xinterval = 200; // 간격
 
-            if (appear == 100) {   //무한 루프 150마다 장애물 등장
-                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 200);
-                arr_rock.add(rock);
-                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 388);
-                arr_rock.add(rock);
-                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 576);
-                arr_rock.add(rock);
-                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 764);
-                arr_rock.add(rock);
-                rock = new Rock(width + random.nextInt((max - min + interval) / interval) * interval + min, 950);
-                arr_rock.add(rock);
+            int ymin = 250; // 최소값
+            int ymax = 980; // 최대값
+            int yinterval = 150; // 간격
 
-                appear=0;   //appear 초기화
+            if (appear == 50) {   //무한 루프 100마다 장애물 등장
+                for (int i = 0; i < 3; i++) {
+                    int randomNumberx = xmin + (int)(Math.random() * ((xmax - xmin) / xinterval + 1)) * xinterval;
+                    int randomNumbery = ymin + (int)(Math.random() * ((ymax - ymin) / yinterval + 1)) * yinterval;
+                    Rock rock = new Rock(randomNumberx, randomNumbery);
+                    arr_rock.add(rock);
+                }
+                appear = 0;   //appear 초기화
             }
 
             //화살쏘기
