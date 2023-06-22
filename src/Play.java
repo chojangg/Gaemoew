@@ -23,7 +23,6 @@ class Game extends JFrame implements KeyListener, Runnable {
     Random random = new Random();
 
     Game() {
-        music();
         getimg();  //사진 불러오기
         gogo();
         setExtendedState(JFrame.MAXIMIZED_BOTH);  // 전체 화면으로 설정
@@ -45,24 +44,6 @@ class Game extends JFrame implements KeyListener, Runnable {
     Image rock_img;         //장애물 이미지
     Image coin_img;         // 코인 이미지
     Image heart1;           // 하트 1개
-
-    public void music() {
-        if(life != 0){
-            // 배경음악
-            try {
-                File file = new File("src/bgm/Little-Samba-Quincas-Moreira.wav");
-                Clip clip = AudioSystem.getClip();
-                clip.open(AudioSystem.getAudioInputStream(file));
-                clip.start();
-                if(life == 0){
-                    clip.stop();
-                }
-            } catch (Exception e) {
-                System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
-            }
-        }
-
-    }
 
     public void getimg() {
         try {
@@ -225,6 +206,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                 heart_appear++;  //하트 등장 간격 위해 횟수 카운트
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("오류가 발생하였습니다. ");
         }
     }
@@ -250,7 +232,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                         clip.open(AudioSystem.getAudioInputStream(file));
                         clip.start();
                     } catch (Exception e) {
-                        System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                        System.err.println("life minus bgm missing");
                     }
                     arr_rock.remove(i);   //해당 장애물 삭제
 
@@ -289,7 +271,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                         clip.open(AudioSystem.getAudioInputStream(file));
                         clip.start();
                     } catch (Exception e) {
-                        System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                        System.err.println("bat bgm missing");
                     }
                 }
             }
@@ -297,11 +279,11 @@ class Game extends JFrame implements KeyListener, Runnable {
             for (int i = 0; i < arr_bat.size(); ++i) {
                 bat = (Bat) arr_bat.get(i);
                 bat.move();
+
                 for (int j = 0; j < arr_rock.size(); ++j) {
                     rock = (Rock) arr_rock.get(j);
                     if (Crash_check(bat.x, bat.y, rock.x, rock.y, bat_img, rock_img)==1) {
                         //장애물에 맞을 경우
-                        arr_bat.remove(i);
                         arr_rock.remove(j);
                         score += 10;  //점수 +10
                         explosion = new Explode(rock.x + rock_img.getWidth(null) / 2, rock.y + rock_img.getHeight(null) / 2, 0);
@@ -312,8 +294,10 @@ class Game extends JFrame implements KeyListener, Runnable {
                             clip.open(AudioSystem.getAudioInputStream(file));
                             clip.start();
                         } catch (Exception e) {
-                            System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                            System.err.println("rock bgm missing");
                         }
+                        arr_bat.remove(i);
+                        break;
 
                     }
                 }
@@ -334,7 +318,7 @@ class Game extends JFrame implements KeyListener, Runnable {
                         clip.open(AudioSystem.getAudioInputStream(file));
                         clip.start();
                     } catch (Exception e) {
-                        System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                        System.err.println("coin bgm missing");
                     }
                     arr_coin.remove(i);
                 }

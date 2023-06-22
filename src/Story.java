@@ -1,10 +1,10 @@
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 public class Story {
     private static final int GIF_DURATION = 500; // GIF 지속 시간
@@ -77,14 +77,21 @@ public class Story {
                 countdownTimer.start(); // 카운트 다운 시작
                 try {
                     File file = new File("src/bgm/countdown.wav");
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(AudioSystem.getAudioInputStream(file));
-                    clip.start();
-                } catch (Exception f) {
-                    System.err.println("Put the music.wav file in the sound folder if you want to play background music, only optional!");
+                    if (file.exists()) {
+                        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(audioInputStream);
+                        clip.start();
+                    } else {
+                        System.err.println("The audio file does not exist: " + file.getAbsolutePath());
+                    }
+                } catch (LineUnavailableException | UnsupportedAudioFileException | IOException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
+
+
 
         // 타이머 시작
         startTimer.setRepeats(false);
