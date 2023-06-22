@@ -199,15 +199,15 @@ class Game extends JFrame implements KeyListener, Runnable {
                 if(ch_break==1){
                     break;
                 }
-                if(score==200){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
+                if(score>=100){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
                     round=2;
                     rock_speed =26;
                 }
-                else if(score==400){
+                else if(score>=200){
                     round=3;
                     rock_speed =35;
                 }
-                else if(score==600){
+                else if(score>=300){
                     round=4;
                     rock_speed =43;
                 }
@@ -258,22 +258,23 @@ class Game extends JFrame implements KeyListener, Runnable {
                 }
             }
 
-            int xmin = 1600; // 최소값
-            int xmax = 2000; // 최대값
-            int xinterval = 200; // 간격
+            int xmin = 100; // 최소값
+            int xmax = 1000; // 최대값
+            int interval = 200; // 간격
+            int xrandomNumber = random.nextInt((xmax - xmin + interval) / interval) * interval + xmin;
 
-            int ymin = 250; // 최소값
-            int ymax = 980; // 최대값
-            int yinterval = 150; // 간격
+            int ymin = 200;
+            int ymax = 990;
+            int yrandomNumber = random.nextInt((ymax - ymin + interval) / interval) * interval + ymin;
 
-            if (appear == 50) {   //무한 루프 100마다 장애물 등장
-                for (int i = 0; i < 3; i++) {
-                    int randomNumberx = xmin + (int)(Math.random() * ((xmax - xmin) / xinterval + 1)) * xinterval;
-                    int randomNumbery = ymin + (int)(Math.random() * ((ymax - ymin) / yinterval + 1)) * yinterval;
-                    Rock rock = new Rock(randomNumberx, randomNumbery);
+            if (appear == 100) {   //무한 루프 150마다 장애물 등장
+                for(int i=0; i<5; i++){
+                    rock = new Rock(width + random.nextInt((xmax - xmin + interval) / interval) * interval + xmin,
+                            random.nextInt((ymax - ymin + interval) / interval) * interval + ymin);
                     arr_rock.add(rock);
                 }
-                appear = 0;   //appear 초기화
+
+                appear=0;   //appear 초기화
             }
 
             //화살쏘기
@@ -623,4 +624,3 @@ public class Play {
         return name;
     }
 }
-
