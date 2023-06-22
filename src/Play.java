@@ -182,19 +182,19 @@ class Game extends JFrame implements KeyListener, Runnable {
                 }
                 if(score>=100){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
                     round=2;
-                    rock_speed =26;
+                    rock_speed =25;
                 }
-                else if(score>=200){
+                else if(score>=200){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
                     round=3;
+                    rock_speed =30;
+                }
+                else if(score>=300){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
+                    round=4;
                     rock_speed =35;
                 }
-                else if(score>=300){
-                    round=4;
-                    rock_speed =43;
-                }
-                else if(score==1000){   //난이도는 5단계까지만
+                else if(score>=400){     //일정 점수가 될때마다 난이도 높이기 (외계인 속도 빠르게 하기)
                     round=5;
-                    rock_speed =50;
+                    rock_speed =40;
                 }
                 KeyWok();           //키보드 입력으로 x, y갱신
                 WorkGame();         //게임 동작 메소드
