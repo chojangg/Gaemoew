@@ -1,6 +1,7 @@
 # Gaemoew
 2023 IT Show계묘년을 지켜라!
 2023.03 ~ 
+[피그마 링크](https://www.figma.com/design/CC7jU1Qs4lrhdoM2mUaIUh/Gaemoew?node-id=0-1&t=YE3erJwpu7EohERu-1)
 
 <br>
 
@@ -8,7 +9,6 @@
 
 --------------------
 Intellij, Java, GUI, Database
-
 
 <br>
 
